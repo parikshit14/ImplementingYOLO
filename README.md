@@ -35,7 +35,7 @@ To run the detector function on the pretrained model:
  + Setup a new virtual environment and install the depencencies from the requirements.txt files
    ` pip install -r requirements.txt `
  + Clone this repository
- + Run **detector.py** for using webcam and play the stone paper scissors game run this code :
+ + Run **detector.py** for using webcam and play the stone paper scissiors game run this code :
    ` python 3_Inference/Detector.py ` considering that u are in the repo directory
  + Hope you enjoyed it, depends on the processor you are using the speed may varry
 ------------------------------------------------------
@@ -62,7 +62,7 @@ Navigate to **Export Settings** in the sidebar and then change the **Provider** 
 
 ![New Project](/1_Image_Annotation/Screen_Recordings/Export_Settings.gif)
 # Labeling
-First create a new tag on the right and give it a relevant tag name. In our example, we choose `stone`, `paper`, `scissors`. Then draw bounding boxes around your objects. You can use the number key **no. key** to quickly assign the first tag to the current bounding box .
+First create a new tag on the right and give it a relevant tag name. In our example, we choose `stone`, `paper`, `scissiors`. Then draw bounding boxes around your objects. You can use the number key **no. key** to quickly assign the first tag to the current bounding box .
 # Export Results
 Once you have labeled enough images press **CRTL+E** to export the project. You should now see a folder called [`vott-csv-export`](/Data/Source_Images/Training_Images/vott-csv-export) in the [`Training_Images`](/Data/Source_Images/Training_Images) directory. Within that folder, you should see a `*.csv` file called [`Annotations-export.csv`](/Data/Source_Images/Training_Images/vott-csv-export/Annotations-export.csv) which contains file names and bounding box coordinates.
 # Convert to YOLO Format
@@ -88,7 +88,7 @@ upload your customized dataset into the correct directory and few other files
 train on this and after training download the **trained_weights_final.h5** and **trained_weights_stage_1.h5** and place them in the correct directory for the testing part.
 
 ## Testing
-In this step, we test our detector on cat and dog images and videos located in [`ImplementingYOLO/Data/Source_Images/Test_Images`](/Data/Source_Images/Test_Images). If you like to test the detector on your own images or videos, place them in the [`Test_Images`](/Data/Source_Images/Test_Images) folder.
+In this step, we test our detector on rock, paper and scissiors images and videos located in [`ImplementingYOLO/Data/Source_Images/Test_Images`](/Data/Source_Images/Test_Images). If you like to test the detector on your own images or videos, place them in the [`Test_Images`](/Data/Source_Images/Test_Images) folder.
 
 ## Testing Your Detector
 kindly rename detector(copy).py to detector.py for inference on your custom dataset
