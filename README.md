@@ -56,11 +56,9 @@ Create a **New Project** and call it `Annotations`. It is highly recommended to 
 
 Under **Source Connection** choose **Add Connection** and put `Images` as **Display Name**. Under **Provider** choose **Local File System** and select [`ImplementingYOLO/Data/Source Images/Training_Images`](/Data/Source_Images/Training_Images) and then **Save Connection**. For **Target Connection** choose the same folder as for **Source Connection**. Hit **Save Project** to finish project creation.
 
-![New Project](/1_Image_Annotation/Screen_Recordings/New_Project.gif)
 # Export Settings
 Navigate to **Export Settings** in the sidebar and then change the **Provider** to `Comma Separated Values (CSV)`, then hit **Save Export Settings**.
 
-![New Project](/1_Image_Annotation/Screen_Recordings/Export_Settings.gif)
 # Labeling
 First create a new tag on the right and give it a relevant tag name. In our example, we choose `stone`, `paper`, `scissiors`. Then draw bounding boxes around your objects. You can use the number key **no. key** to quickly assign the first tag to the current bounding box .
 # Export Results
