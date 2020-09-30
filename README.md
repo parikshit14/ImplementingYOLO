@@ -108,7 +108,7 @@ __If facing any issues post it on the github i will try to resolve it as soon as
 
 refered from->
 ```
-joseph redmon and fadi ali paper on YOLO V3: [YOLOv3](https://pjreddie.com/darknet/yolo/)
+Joseph Redmon and Ali Farhadi paper on YOLO V3: [YOLOv3](https://pjreddie.com/darknet/yolo/)
 ```
 
 ```
