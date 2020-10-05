@@ -271,7 +271,7 @@ if __name__ == "__main__":
         )
         out_df.to_csv(FLAGS.box, index=False)
 
-    # This is for videos
+        # This is for videos
         """if input_video_paths:
         print(
             "Found {} input videos: {} ...".format(
@@ -286,14 +286,12 @@ if __name__ == "__main__":
                 FLAGS.output,
                 os.path.basename(vid_path).replace(".", FLAGS.postfix + "."),
             )"""
-    start = timer()    
+    start = timer()
     detect_video(yolo)
 
     end = timer()
     print(
-    "Processed {} videos in {:.1f}sec".format(
-        len(input_video_paths), end - start
-    )
+        "Processed {} videos in {:.1f}sec".format(len(input_video_paths), end - start)
     )
     # Close the current yolo session
     yolo.close_session()

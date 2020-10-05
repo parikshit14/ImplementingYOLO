@@ -224,7 +224,8 @@ class YOLO(object):
     def close_session(self):
         self.sess.close()
 
-#for videos save in test folder
+
+# for videos save in test folder
 def detect_video(yolo, video_path, output_path=""):
     import cv2
 
@@ -277,15 +278,17 @@ def detect_video(yolo, video_path, output_path=""):
             color=(255, 0, 0),
             thickness=2,
         )
-        #cv2.namedWindow("result", cv2.WINDOW_NORMAL)
-        #cv2.imshow("result", result)
+        # cv2.namedWindow("result", cv2.WINDOW_NORMAL)
+        # cv2.imshow("result", result)
         if isOutput:
             out.write(result[:, :, ::-1])
-        #if cv2.waitKey(1) & 0xFF == ord('q'):
+        # if cv2.waitKey(1) & 0xFF == ord('q'):
         #     break
     vid.release()
     out.release()
     yolo.close_session()
+
+
 # For Webcam uncomment this block and comment the above one
 """
 def detect_video(yolo, video_path, output_path=""):

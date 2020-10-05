@@ -223,6 +223,8 @@ class YOLO(object):
 
     def close_session(self):
         self.sess.close()
+
+
 """
 #for videos saved in test folder
 def detect_video(yolo, video_path, output_path=""):
@@ -288,37 +290,40 @@ def detect_video(yolo, video_path, output_path=""):
     yolo.close_session()
 # For Webcam uncomment this block and comment the above one
 """
+
+
 def detect_video(yolo):
     import cv2
-    stone=cv2.imread('2_Training/src/keras_yolo3/rps_icons/stone.png')
-    #stone=cv2.cvtColor(stone,cv2.COLOR_BGR2BGRA)
-    paper=cv2.imread('2_Training/src/keras_yolo3/rps_icons/paper.png')
-    scissors=cv2.imread('2_Training/src/keras_yolo3/rps_icons/scissors.png')
-    #cv2.imshow("rock",rock)
+
+    stone = cv2.imread("2_Training/src/keras_yolo3/rps_icons/stone.png")
+    # stone=cv2.cvtColor(stone,cv2.COLOR_BGR2BGRA)
+    paper = cv2.imread("2_Training/src/keras_yolo3/rps_icons/paper.png")
+    scissors = cv2.imread("2_Training/src/keras_yolo3/rps_icons/scissors.png")
+    # cv2.imshow("rock",rock)
     vid = cv2.VideoCapture(0)
     if not vid.isOpened():
         raise IOError("Couldn't open webcam ")
-    #video_FourCC = cv2.VideoWriter_fourcc(*"mp4v")  # int(vid.get(cv2.CAP_PROP_FOURCC))
-    #video_fps = vid.get(cv2.CAP_PROP_FPS)
-    #video_size = (
-     #   int(vid.get(cv2.CAP_PROP_FRAME_WIDTH)),
+    # video_FourCC = cv2.VideoWriter_fourcc(*"mp4v")  # int(vid.get(cv2.CAP_PROP_FOURCC))
+    # video_fps = vid.get(cv2.CAP_PROP_FPS)
+    # video_size = (
+    #   int(vid.get(cv2.CAP_PROP_FRAME_WIDTH)),
     #    int(vid.get(cv2.CAP_PROP_FRAME_HEIGHT)),
-    #)
-    #isOutput = True if output_path != "" else False
-    #if isOutput:
+    # )
+    # isOutput = True if output_path != "" else False
+    # if isOutput:
     #    print(
     #        "Processing {} with frame size {} at {:.1f} FPS".format(
     #            os.path.basename(video_path), video_size, video_fps
     #        )
     #   )
-        # print("!!! TYPE:", type(output_path), type(video_FourCC), type(video_fps), type(video_size))
+    # print("!!! TYPE:", type(output_path), type(video_FourCC), type(video_fps), type(video_size))
     #    out = cv2.VideoWriter(output_path, video_FourCC, video_fps, video_size)
     accum_time = 0
     curr_fps = 0
     fps = "FPS: ??"
     prev_time = timer()
-    comp_win=0
-    human_win=0
+    comp_win = 0
+    human_win = 0
     while vid.isOpened():
 
         return_value, frame = vid.read()
@@ -326,137 +331,150 @@ def detect_video(yolo):
             break
         # opencv images are BGR, translate to RGB
         frame = frame[:, :, ::-1]
-        frame_h,frame_w,frame_c=frame.shape
+        frame_h, frame_w, frame_c = frame.shape
         image = Image.fromarray(frame)
-        timing=int(time.time()%5)
+        timing = int(time.time() % 5)
 
-        if (timing==0):
+        if timing == 0:
 
-          out_pred, image = yolo.detect_image(image, show_stats=False)
-          result = np.asarray(image)
-          result=result.copy()
-          winner = 'none'
-          if out_pred:
+            out_pred, image = yolo.detect_image(image, show_stats=False)
+            result = np.asarray(image)
+            result = result.copy()
+            winner = "none"
+            if out_pred:
 
-            comp_move=random.randint(0,2)
-            #print(comp_move)
-            human_move = out_pred[0][4]  #storing the output class detected by the model rock=0,paper=1,scissors=2
-            #checking who will be the winner
-            if comp_move==0:
-            #print('stone')
-             icon_h,icon_w,icon_c=stone.shape
-             if human_move==1:
-              winner = 'human'
-              human_win=human_win+1
-             elif human_move==2:
-              comp_win=comp_win+1
-              winner = 'computer'
-             else:
-              winner = 'draw'
-            elif comp_move==1:
-            #print('paper')
-             icon_h,icon_w,icon_c=paper.shape
-             if human_move==2:
-              winner = 'human'
-              human_win=human_win+1
-             elif human_move==0:
-              winner = 'computer'
-              comp_win=comp_win+1
-             else:
-              winner = 'draw'
-            else:
-            #print('scissor')
-             icon_h,icon_w,icon_c=scissors.shape
-             if human_move==0:
-              winner = 'human'
-              human_win=human_win+1
-             elif human_move==1:
-              winner = 'computer'
-              comp_win=comp_win+1
-             else:
-              winner = 'draw'
-          #loop to place the icon in bottom right corner
-            time.sleep(0.6)
-            for i in range (0,icon_h):
-             for j in range (0,icon_w):
-              lower_start_h=frame_h-icon_h
-              lower_start_w=frame_w-icon_w
-              if comp_move==0:
-                result[lower_start_h+i,lower_start_w+j]=stone[i,j]
-              elif comp_move==1:
-                result[lower_start_h+i,lower_start_w+j]=paper[i,j]
-              else:
-                result[lower_start_h+i,lower_start_w+j]=scissors[i,j]
-            cv2.putText(
-            result,
-            text="winner is {}:".format(winner),
-            org=(3, 30),
-            fontFace=cv2.FONT_HERSHEY_SIMPLEX,
-            fontScale=0.75,
-            color=(255, 255, 0),
-            thickness=3,
-            )
-            result=result[:,:,::-1]
-
-            printer(result)
-            #cv2.namedWindow("result", cv2.WINDOW_NORMAL)
-            #result=cv2.add(result,stone)
-            #cv2.imshow("result", result)
-            #if isOutput:
-            #    out.write(result[:, :, ::-1])
-            #if cv2.waitKey(1) & 0xFF == ord('q'):
-            #       break
-        else:
-                    #cv2.namedWindow("result", cv2.WINDOW_NORMAL)
-                    frame=np.array(frame)
-                    cv2.putText(
-                    frame,
-                    text="choose stone paper scissiors in {}".format(4-timing),
-                    org=(3, 15),
+                comp_move = random.randint(0, 2)
+                # print(comp_move)
+                human_move = out_pred[0][
+                    4
+                ]  # storing the output class detected by the model rock=0,paper=1,scissors=2
+                # checking who will be the winner
+                if comp_move == 0:
+                    # print('stone')
+                    icon_h, icon_w, icon_c = stone.shape
+                    if human_move == 1:
+                        winner = "human"
+                        human_win = human_win + 1
+                    elif human_move == 2:
+                        comp_win = comp_win + 1
+                        winner = "computer"
+                    else:
+                        winner = "draw"
+                elif comp_move == 1:
+                    # print('paper')
+                    icon_h, icon_w, icon_c = paper.shape
+                    if human_move == 2:
+                        winner = "human"
+                        human_win = human_win + 1
+                    elif human_move == 0:
+                        winner = "computer"
+                        comp_win = comp_win + 1
+                    else:
+                        winner = "draw"
+                else:
+                    # print('scissor')
+                    icon_h, icon_w, icon_c = scissors.shape
+                    if human_move == 0:
+                        winner = "human"
+                        human_win = human_win + 1
+                    elif human_move == 1:
+                        winner = "computer"
+                        comp_win = comp_win + 1
+                    else:
+                        winner = "draw"
+                # loop to place the icon in bottom right corner
+                time.sleep(0.6)
+                for i in range(0, icon_h):
+                    for j in range(0, icon_w):
+                        lower_start_h = frame_h - icon_h
+                        lower_start_w = frame_w - icon_w
+                        if comp_move == 0:
+                            result[lower_start_h + i, lower_start_w + j] = stone[i, j]
+                        elif comp_move == 1:
+                            result[lower_start_h + i, lower_start_w + j] = paper[i, j]
+                        else:
+                            result[lower_start_h + i, lower_start_w + j] = scissors[
+                                i, j
+                            ]
+                cv2.putText(
+                    result,
+                    text="winner is {}:".format(winner),
+                    org=(3, 30),
                     fontFace=cv2.FONT_HERSHEY_SIMPLEX,
-                    fontScale=0.50,
-                    color=(255, 255, 255),
-                    thickness=2,
-                    )
-                    frame=frame[:,:,::-1]
-                    #cv2.imshow("result", frame)
-                    printer(frame)
-		    #if isOutput:
-		    #    out.write(result[:, :, ::-1])
-                    #if cv2.waitKey(1) & 0xFF == ord('q'):
-                    # break
-        #cv2.namedWindow("result", cv2.WINDOW_NORMAL)
-        #cv2.imshow("result", frame)
-        if cv2.waitKey(1) & 0xFF == ord('q'):
-           img = np.zeros((100,500,3), np.uint8)
+                    fontScale=0.75,
+                    color=(255, 255, 0),
+                    thickness=3,
+                )
+                result = result[:, :, ::-1]
 
-# Write some Text
-           font                   = cv2.FONT_HERSHEY_SIMPLEX
-           bottomLeftCornerOfText = (0,50)
-           fontScale              = 1
-           fontColor              = (255,255,255)
-           lineType               = 2
+                printer(result)
+                # cv2.namedWindow("result", cv2.WINDOW_NORMAL)
+                # result=cv2.add(result,stone)
+                # cv2.imshow("result", result)
+                # if isOutput:
+                #    out.write(result[:, :, ::-1])
+                # if cv2.waitKey(1) & 0xFF == ord('q'):
+                #       break
+        else:
+            # cv2.namedWindow("result", cv2.WINDOW_NORMAL)
+            frame = np.array(frame)
+            cv2.putText(
+                frame,
+                text="choose stone paper scissiors in {}".format(4 - timing),
+                org=(3, 15),
+                fontFace=cv2.FONT_HERSHEY_SIMPLEX,
+                fontScale=0.50,
+                color=(255, 255, 255),
+                thickness=2,
+            )
+            frame = frame[:, :, ::-1]
+            # cv2.imshow("result", frame)
+            printer(frame)
+        # if isOutput:
+        #    out.write(result[:, :, ::-1])
+        # if cv2.waitKey(1) & 0xFF == ord('q'):
+        # break
+        # cv2.namedWindow("result", cv2.WINDOW_NORMAL)
+        # cv2.imshow("result", frame)
+        if cv2.waitKey(1) & 0xFF == ord("q"):
+            img = np.zeros((100, 500, 3), np.uint8)
 
-           cv2.putText(img,'winner is {}'.format("computer with " + str(comp_win) + " wins" if comp_win>human_win else "human with " + str(human_win) + " wins" ),
-           bottomLeftCornerOfText,
-           font,
-           fontScale,
-           fontColor,
-           lineType)
+            # Write some Text
+            font = cv2.FONT_HERSHEY_SIMPLEX
+            bottomLeftCornerOfText = (0, 50)
+            fontScale = 1
+            fontColor = (255, 255, 255)
+            lineType = 2
 
-#Display the image
-           cv2.imshow("result",img)
+            cv2.putText(
+                img,
+                "winner is {}".format(
+                    "computer with " + str(comp_win) + " wins"
+                    if comp_win > human_win
+                    else "human with " + str(human_win) + " wins"
+                ),
+                bottomLeftCornerOfText,
+                font,
+                fontScale,
+                fontColor,
+                lineType,
+            )
 
-#Save image
-           cv2.imwrite("out.jpg", img)
-           #print(comp_win,human_win)
-           cv2.waitKey(0)
-           break
+            # Display the image
+            cv2.imshow("result", img)
+
+            # Save image
+            cv2.imwrite("out.jpg", img)
+            # print(comp_win,human_win)
+            cv2.waitKey(0)
+            break
     vid.release()
-    #out.release()
+    # out.release()
     yolo.close_session()
-    
+
+
 def printer(res):
     import cv2
+
     cv2.namedWindow("result", cv2.WINDOW_NORMAL)
     cv2.imshow("result", res)
